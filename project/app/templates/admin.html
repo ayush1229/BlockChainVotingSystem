@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mx-auto mt-10">
+        <div class="bg-gradient-to-r from-blue-200 to-blue-400 p-4 rounded-lg shadow-lg mx-auto max-w-md">
+            <h1 class="text-4xl font-extrabold text-center text-gray-800">Admin Login</h1>
+            <div class="mt-8 max-w-md mx-auto">
+                <form action="admin-dashboard.html" method="GET">
+                    <div class="mb-4">
+                        <label for="adminId" class="block text-sm font-medium text-gray-700">Admin ID</label>
+                        <input type="text" id="adminId" name="adminId" 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                               placeholder="Enter Admin ID" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="adminPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                        <input type="password" id="adminPassword" name="adminPassword" 
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
+                               placeholder="Enter Password" required>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

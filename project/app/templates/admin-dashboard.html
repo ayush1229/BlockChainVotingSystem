@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <header class="bg-blue-500 p-4">
+        <nav class="container mx-auto flex justify-between items-center">
+            <div class="text-white text-lg font-bold">
+                <a href="index.html">Voting System</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container mx-auto mt-10 text-center">
+        <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+        <p>Welcome to the admin dashboard!</p>
+        <div class="mt-8 flex flex-col space-y-4">
+            <a href="release-results.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
+                Release Result
+            </a>
+            <a href="view-results.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
+                View Result
+            </a>
+            <a href="create-voting-session.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
+                Create Voting Session
+            </a>
+        </div>
+    </div>
+{% endblock content %}

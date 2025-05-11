@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+    <div class="container mx-auto mt-10">
+        <div class="bg-gradient-to-r from-green-200 to-green-400 p-6 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold text-center">Voting Results</h1>
+            <div class="mt-8">
+                <p class="text-lg">Here are the results of the voting session:</p>
+                <table class="min-w-full mt-4">
+                    <thead>
+                        <tr>
+                            <th class="border px-4 py-2">Candidate</th>
+                            <th class="border px-4 py-2">Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border px-4 py-2">Candidate 1</td>
+                            <td class="border px-4 py-2">100</td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2">Candidate 2</td>
+                            <td class="border px-4 py-2">150</td>
+                        </tr>
+                        <tr>
+                            <td class="border px-4 py-2">Candidate 3</td>
+                            <td class="border px-4 py-2">200</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

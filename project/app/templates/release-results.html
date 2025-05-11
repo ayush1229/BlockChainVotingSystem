@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="container mx-auto mt-10 text-center">
+        <div class="bg-gradient-to-r from-blue-200 to-blue-400 p-6 rounded-lg shadow-lg">
+            <h1 class="text-3xl font-bold">Release Voting Results</h1>
+            <div class="mt-8">
+                <p class="text-lg">Are you sure you want to release the results?</p>
+                <form class="mt-4">
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+                        Release Results
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

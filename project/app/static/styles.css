@@ -1,0 +1,31 @@
+body {
+    background-color: #d3d3d3; /* Greyish background */
+}
+
+/* Additional styles for consistency with create-voting-session.html */
+.header {
+    background-color: #3b82f6; /* Blue background for header */
+}
+
+.button {
+    background-color: #3b82f6; /* Blue button color */
+    color: white; /* White text for buttons */
+}
+
+
+.bg-gradient-to-r {
+    background: linear-gradient(to right, #e0f7fa, #80deea); /* Light gradient */
+}
+
+/* Taskbar visibility based on height */
+.taskbar {
+    display: none; /* Hide by default */
+}
+
+@media (min-height: 90px) {
+    .taskbar {
+        display: block; /* Show when height is above 90px */
+    }
+}
+
+/* Add your custom styles here */
