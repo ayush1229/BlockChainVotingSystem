@@ -4,11 +4,17 @@
 
 
     <div class="container mx-auto mt-10" style="display: flex; align-items: center; height: calc(100vh - 50px);">
-
         <div class="bg-gradient-to-r from-blue-200 to-blue-400 p-6 rounded-lg shadow-lg">
-
         <h1 class="text-3xl font-bold">Candidates</h1>
         <p class="mt-4">List of candidates will be displayed here.</p>
+        <ul class="mt-6">
+            {% for candidate in candidates %}
+                <li class="flex items-center mb-4">
+                    <img src="{{ url_for('static', filename='profile_pics/' + candidate.image_file) }}" alt="{{ candidate.name }} Profile Picture" class="w-16 h-16 rounded-full mr-4">
+                    <span class="text-xl font-medium">{{ candidate.name }}</span>
+                </li>
+            {% endfor %}
+        </ul>
         </div>
         </div>
 

@@ -2,15 +2,9 @@
 
 {% block content %}
 
-            <div class="mt-8 max-w-md mx-auto">
-                <form action="confirmation.html" method="GET">
-                    <div class="mb-4">
-                        <label for="voterId" class="block text-sm font-medium text-gray-700">Voter ID</label>
-                        <input type="text" id="voterId" name="voterId" 
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" 
-                               placeholder="Enter your Voter ID" required>
-                    </div>
-                    <div class="mb-6">
+<div class="mt-8 max-w-md mx-auto">
+    <form action="{{ url_for('vote.vote_in_session', session_id=session.id) }}" method="POST">
+        <div class="mb-6">
                         <label for="candidate" class="block text-sm font-medium text-gray-700">Select Candidate</label>
                         <select id="candidate" name="candidate" 
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
@@ -18,14 +12,17 @@
                             <option value="candidate1">Candidate 1</option>
                             <option value="candidate2">Candidate 2</option>
                             <option value="candidate3">Candidate 3</option>
+                            {% for candidate in session.candidates %}
+                            <option value="{{ candidate.id }}">{{ candidate.name }}</option>
+                            {% endfor %}
                         </select>
-                    </div>
-                    <button type="submit" 
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <button type="submit"
                             class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
                         Submit Vote
                     </button>
-                </form>
-            </div>
-        </div>
-    </div>
+    </form>
+</div>
+
 {% endblock content %}

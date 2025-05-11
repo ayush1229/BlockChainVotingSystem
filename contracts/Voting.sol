@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
 contract VotingSystem {
     address public admin;
     uint public sessionCounter;
@@ -29,6 +31,7 @@ contract VotingSystem {
         mapping(address => bool) hasVoted;
     }
 
+    address public votingNFT; // Address of the deployed ERC721 contract
     mapping(uint => VotingSession) public sessions;
 
     event AdminSet(address newAdmin);
@@ -42,6 +45,20 @@ contract VotingSystem {
         require(admin == address(0), "Admin already set");
         admin = _admin;
         emit AdminSet(_admin);
+    }
+
+    // Set the address of the deployed voting NFT contract
+    function setVotingNFT(address _votingNFT) public onlyAdmin {
+        require(_votingNFT != address(0), "Invalid NFT contract address");
+        votingNFT = _votingNFT;
+    }
+
+    // Mint a voting NFT for a verified voter
+    function mintVotingNFT(address to, uint256 sessionId) public onlyAdmin {
+        require(votingNFT != address(0), "Voting NFT contract not set");
+        // Using a combination of sessionId and a simple counter for token ID
+        // A more robust system might use a mapping for unique IDs per session
+        ERC721(votingNFT).safeTransferFrom(address(0), to, sessionId * 1000000 + sessionCounter); // Simple token ID generation
     }
 
     function createSession(
@@ -67,6 +84,7 @@ contract VotingSystem {
 
     function vote(uint sessionId, uint candidateIndex) public {
         VotingSession storage session = sessions[sessionId];
+        require(votingNFT != address(0) && ERC721(votingNFT).ownerOf(sessionId * 1000000 + sessionCounter) == msg.sender, "You need a voting NFT to vote in this session");
         require(session.isActive, "Voting session is not active");
         require(block.timestamp < session.endTime, "Voting session has ended");
         require(!session.hasVoted[msg.sender], "You have already voted");

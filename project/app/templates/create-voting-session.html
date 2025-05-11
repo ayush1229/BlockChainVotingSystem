@@ -3,8 +3,8 @@
 {% block content %}
     <div class="container mx-auto mt-10">
         <div class="bg-gradient-to-r from-green-200 to-green-400 p-6 rounded-lg shadow-lg">
-            <h1 class="text-3xl font-bold text-center">Create Voting Session</h1>
-            <form class="mt-8 max-w-lg mx-auto">
+            <h1 class="text-3xl font-bold text-center">Create Voting Session</h1>{% raw %}
+            <form class="mt-8 max-w-lg mx-auto" method="POST" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="start-time" class="block text-lg">Start Date and Time:</label>
                     <input type="datetime-local" id="start-time" class="border border-gray-300 rounded p-2 w-full" required>
@@ -19,21 +19,28 @@
                 </div>
                 <div id="candidate-names" class="mb-4">
                     <label class="block text-lg">Candidate Names:</label>
-                    <div class="flex flex-col" id="candidate-inputs">
-                        <div class="flex flex-col">
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                    <div id="candidate-inputs">
+                        <div class="flex flex-col mb-4 border p-4 rounded">
+                            <input type="text" name="candidate_name" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
+                            <input type="text" name="candidate_party" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                            <label for="candidate_picture" class="block text-sm font-medium text-gray-700">Profile Picture:</label>
+                            <input type="file" name="candidate_picture" accept="image/*" class="border border-gray-300 rounded p-2" required>
                         </div>
-                        <div class="flex flex-col">
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                        <div class="flex flex-col mb-4 border p-4 rounded">
+                            <input type="text" name="candidate_name" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
+                            <input type="text" name="candidate_party" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                            <label for="candidate_picture" class="block text-sm font-medium text-gray-700">Profile Picture:</label>
+                            <input type="file" name="candidate_picture" accept="image/*" class="border border-gray-300 rounded p-2" required>
                         </div>
-                        <div class="flex flex-col">
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
-                            <input type="text" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                        <div class="flex flex-col mb-4 border p-4 rounded">
+                            <input type="text" name="candidate_name" class="border border-gray-300 rounded p-2 mb-2" placeholder="Candidate Name" required>
+                            <input type="text" name="candidate_party" class="border border-gray-300 rounded p-2 mb-2" placeholder="Party Name" required>
+                            <label for="candidate_picture" class="block text-sm font-medium text-gray-700">Profile Picture:</label>
+                            <input type="file" name="candidate_picture" accept="image/*" class="border border-gray-300 rounded p-2" required>
                         </div>
                     </div>
                     <button type="button" id="add-candidate" class="bg-blue-600 text-white rounded p-2 mt-2">Add Another Candidate</button>
+                    <button type="button" id="remove-candidate" class="bg-red-600 text-white rounded p-2 mt-2">Remove Last Candidate</button>
                 </div>
                 <button type="submit" class="bg-blue-600 text-white rounded p-2 w-full">Create Voting Session</button>
             </form>
@@ -41,12 +48,53 @@
     </div>
     <script>
         document.getElementById('add-candidate').addEventListener('click', function() {
-            const candidateInputs = document.getElementById('candidate-inputs');
-            const newInput = document.createElement('input');
-            newInput.type = 'text';
-            newInput.className = 'border border-gray-300 rounded p-2 mb-2';
-            newInput.placeholder = 'Candidate Name';
-            candidateInputs.appendChild(newInput);
+            const candidateInputsDiv = document.getElementById('candidate-inputs');
+            const newCandidateDiv = document.createElement('div');
+            newCandidateDiv.className = 'flex flex-col mb-4 border p-4 rounded';
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.name = 'candidate_name';
+            nameInput.className = 'border border-gray-300 rounded p-2 mb-2';
+            nameInput.placeholder = 'Candidate Name';
+            nameInput.required = true;
+
+            const partyInput = document.createElement('input');
+            partyInput.type = 'text';
+            partyInput.name = 'candidate_party';
+            partyInput.className = 'border border-gray-300 rounded p-2 mb-2';
+            partyInput.placeholder = 'Party Name';
+            partyInput.required = true;
+
+            const pictureLabel = document.createElement('label');
+            pictureLabel.htmlFor = 'candidate_picture';
+            pictureLabel.className = 'block text-sm font-medium text-gray-700';
+            pictureLabel.textContent = 'Profile Picture:';
+
+            const pictureInput = document.createElement('input');
+            pictureInput.type = 'file';
+            pictureInput.name = 'candidate_picture';
+            pictureInput.accept = 'image/*';
+            pictureInput.className = 'border border-gray-300 rounded p-2';
+            pictureInput.required = true;
+
+            newCandidateDiv.appendChild(nameInput);
+            newCandidateDiv.appendChild(partyInput);
+            newCandidateDiv.appendChild(pictureLabel);
+            newCandidateDiv.appendChild(pictureInput);
+
+            candidateInputsDiv.appendChild(newCandidateDiv);
+        });
+
+        document.getElementById('remove-candidate').addEventListener('click', function() {
+            const candidateInputsDiv = document.getElementById('candidate-inputs');
+            const candidates = candidateInputsDiv.getElementsByClassName('flex flex-col mb-4 border p-4 rounded');
+            if (candidates.length > 1) {
+                candidateInputsDiv.removeChild(candidates[candidates.length - 1]);
+            } else {
+                alert("You must have at least one candidate.");
+            }
         });
     </script>
+{% endraw %}
 {% endblock content %}

@@ -1,7 +1,8 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
+import json
 from app import db, bcrypt
-from app.models import User
+from app.models import User, Admin
 from app.user.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from app.user.utils import save_picture, send_reset_email
 
@@ -14,7 +15,13 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        # Assuming emails are submitted as a comma-separated string or similar
+        email_list = [e.strip() for e in form.emails.data.split(',') if e.strip()]
+        # Store emails as a JSON string
+        emails_json = json.dumps(email_list)
+
+        # The primary email field might still be useful, or you can remove it if emails list is sufficient
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password, emails=emails_json)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -86,3 +93,9 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+@user.route('/link_wallet', methods=['GET', 'POST'])
+@login_required
+def link_wallet():
+    # This route primarily serves the template for Metamask linking.
+    return render_template('link_wallet.html', title='Link Wallet')
