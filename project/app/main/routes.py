@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, jsonify, session as flask_session, make_response, current_user, abort
 from flask_login import login_required, logout_user
-from .. import web3_utils # Assuming web3_utils is in the parent directory of app
+import web3_utils  # Adjusted to absolute import as it exists outside the project folder
 from app import bcrypt # Import bcrypt
 from app.user.utils import save_picture # Import save_picture
 from app.models import db, VotingSession, Candidate, Admin, User, ManualVerificationRequest # Import db and models and ManualVerificationRequest
