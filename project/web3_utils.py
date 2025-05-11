@@ -16,10 +16,21 @@ w3 = Web3(Web3.HTTPProvider(provider_url))
 with open("app/static/contracts/VotingSystem.json") as f:
     contract_data = json.load(f)
 
-abi = contract_data["abi"]
-contract_address = Web3.to_checksum_address("0x39a18C3b330C4b14981dEBdF1D347c7a5727b61D")  # Replace with actual deployed address
+voting_abi = contract_data["abi"]
+voting_contract_address = Web3.to_checksum_address("0x39a18C3b330C4b14981dEBdF1D347c7a5727b61D")  # Replace with actual deployed address
 
-contract = w3.eth.contract(address=contract_address, abi=abi)
+voting_contract = w3.eth.contract(address=voting_contract_address, abi=voting_abi)
+
+# Load NFT ABI and Address (You'll need to deploy your NFT contract and get its details)
+# IMPORTANT: Replace with the actual path to your NFT contract ABI and deployed address
+try:
+    with open("app/static/contracts/VotingNFT.json") as f: # Replace with your NFT ABI path
+        nft_contract_data = json.load(f)
+    nft_abi = nft_contract_data["abi"]
+    nft_contract_address = Web3.to_checksum_address("YOUR_NFT_CONTRACT_ADDRESS") # Replace with your NFT contract address
+    nft_contract = w3.eth.contract(address=nft_contract_address, abi=nft_abi)
+except FileNotFoundError:
+    print("Warning: NFT contract ABI not found. Minting functionality will not work.")
 
 # Helper: Send a transaction
 def send_transaction(function, account_address):
@@ -43,12 +54,18 @@ def send_transaction(function, account_address):
 # 1. Set Admin (only once)
 def set_admin(admin_address):
     admin_address = Web3.to_checksum_address(admin_address)
-    func = contract.functions.setAdmin(admin_address)
+    func = voting_contract.functions.setAdmin(admin_address)
     return send_transaction(func, public_address)
 
 # 2. Create a Voting Session
 def create_session(title, candidate_names, duration_in_seconds):
-    func = contract.functions.createSession(title, candidate_names, duration_in_seconds)
+    func = voting_contract.functions.createSession(title, candidate_names, duration_in_seconds)
+    return send_transaction(func, public_address)
+
+# 3. Mint a voting NFT
+def mint_nft(to_address, session_id):
+    to_address = Web3.to_checksum_address(to_address)
+    func = nft_contract.functions.mintVotingNFT(to_address, session_id)
     return send_transaction(func, public_address)
 
 # 3. Vote (as a user)
@@ -68,18 +85,18 @@ def vote(session_id, candidate_index, voter_address, voter_private_key):
 
 # 4. End session
 def end_session(session_id):
-    func = contract.functions.endSession(session_id)
+    func = voting_contract.functions.endSession(session_id)
     return send_transaction(func, public_address)
 
 # 5. Release results
 def release_results(session_id):
-    func = contract.functions.releaseResults(session_id)
+    func = voting_contract.functions.releaseResults(session_id)
     return send_transaction(func, public_address)
 
 # 6. Read-only: Get candidates
-def get_candidates(session_id):
-    return contract.functions.getCandidates(session_id).call()
+def get_candidates(session_id): # NOTE: This function might need adjustment based on how candidates are stored/retrieved on-chain
+    return voting_contract.functions.getCandidates(session_id).call()
 
 # 7. Read-only: Has user voted
 def has_user_voted(session_id, user_address):
-    return contract.functions.hasVoted(session_id, Web3.to_checksum_address(user_address)).call()
+    return voting_contract.functions.hasVoted(session_id, Web3.to_checksum_address(user_address)).call()

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+    {% block content %}
+        <h2>Your Account</h2>
+        <p>Username: {{ current_user.username }}</p>
+        <p>Email: {{ current_user.email }}</p>
+        {% if not current_user.wallet_address %}
+            <p>You haven't linked your wallet yet.</p>
+            <p><a href="{{ url_for('user.link_wallet') }}">Link Your Wallet</a></p>
+        {% else %}
+            <p>Linked Wallet Address: {{ current_user.wallet_address }}</p>
+            {# You might add an option to update the wallet address here later #}
+        {% endif %}
+    {% endblock content %}

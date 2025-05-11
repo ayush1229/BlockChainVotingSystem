@@ -16,12 +16,97 @@
             <a href="release-results.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
                 Release Result
             </a>
-            <a href="view-results.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
+            <a href="{{ url_for('main.view_results', session_id=some_session_id) }}" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
                 View Result
             </a>
             <a href="create-voting-session.html" class="w-full bg-blue-600 text-white py-4 rounded-md text-xl hover:bg-blue-700 transition duration-300">
                 Create Voting Session
             </a>
         </div>
+
+        <div class="mt-12 p-6 bg-white rounded-lg shadow-lg text-left">
+            <h2 class="text-2xl font-bold mb-4">Email Verification Settings</h2>
+            <form id="verificationSettingsForm">
+                <div class="mb-4">
+ <label class="block text-gray-700 text-sm font-bold mb-2">
+                        Verification Method:
+                    </label>
+                    <div>
+                        <label class="inline-flex items-center">
+                            <input type="radio" class="form-radio text-blue-600" name="verificationMethod" value="institute" checked>
+                            <span class="ml-2">Institute Email</span>
+                        </label>
+                        <label class="inline-flex items-center ml-6">
+                            <input type="radio" class="form-radio text-blue-600" name="verificationMethod" value="manual">
+                            <span class="ml-2">Manual Verification</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="instituteEmailSettings" class="mb-4">
+                    <label for="instituteDomain" class="block text-gray-700 text-sm font-bold mb-2">
+                        Allowed Email Domain:
+                    </label>
+                    <input type="text" id="instituteDomain" name="instituteDomain" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="e.g. @youruniversity.edu">
+                </div>
+
+                <div id="manualVerificationSettings" class="hidden mb-4">
+                    <label for="verificationTimeLimit" class="block text-gray-700 text-sm font-bold mb-2">
+                        Verification Time Limit (days):
+                    </label>
+                    <input type="number" id="verificationTimeLimit" name="verificationTimeLimit" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" min="1">
+                    <label for="additionalInfo" class="block text-gray-700 text-sm font-bold mb-2 mt-4">
+                        Additional Information Required from User:
+                    </label>
+                    <textarea id="additionalInfo" name="additionalInfo" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Specify any additional information needed for verification (e.g., student ID, department)."></textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Save Settings
+                </button>
+            </form>
+        </div>
+
+ <div class="mt-12 p-6 bg-white rounded-lg shadow-lg text-left">
+ <h2 class="text-2xl font-bold mb-4">Pending Manual Verification Requests</h2>
+ {% if pending_verification_requests %}
+ <ul class="divide-y divide-gray-200">
+ {% for request in pending_verification_requests %}
+ <li class="py-4">
+ <div class="flex justify-between items-center">
+ <div>
+ <p class="text-lg font-semibold text-gray-900">{{ request.user.email }}</p>
+ <p class="text-sm text-gray-600">Session: {{ request.voting_session.title }}</p>
+ {% if request.additional_info %}
+ <p class="text-sm text-gray-700 mt-1">Additional Info: {{ request.additional_info }}</p>
+ {% endif %}
+ <p class="text-xs text-gray-500 mt-1">Requested on: {{ request.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
+ </div>
+ <div>
+ {# Add buttons for Admin to Approve/Reject #}
+ <a href="{{ url_for('main.verify_request', request_id=request.id, action='approve') }}"
+ class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded text-sm mr-2">
+ Approve
+ </a>
+ <a href="{{ url_for('main.verify_request', request_id=request.id, action='reject') }}"
+ class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm">
+ Reject
+ </a>
+ {# Add buttons for Admin to Approve/Reject #}
+ </div>
+ </div>
+ </li>
+ {% endfor %}
+ </ul>
+ {% else %}
+ <p class="text-gray-600">No pending verification requests at this time.</p>
+ {% endif %}
+ </div>
+
+
+ <script>
+        // Add JavaScript to toggle visibility based on radio button selection
+        // (Same script as before, assuming it's included elsewhere or here)
+ </script>
     </div>
 {% endblock content %}

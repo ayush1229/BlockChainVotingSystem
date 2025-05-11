@@ -1,7 +1,7 @@
-from flask_wtf import FlaskForm
+whatfrom flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from flask_login import current_user
 from app.models import User
 
@@ -13,6 +13,8 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password',
                              validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
+    emails = TextAreaField('Additional Emails (comma-separated)',
+                           validators=[Optional()])
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
 
@@ -70,3 +72,8 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+class LinkWalletForm(FlaskForm):
+    wallet_address = StringField('Wallet Address',
+                                 validators=[DataRequired()])
+    submit = SubmitField('Link Wallet')

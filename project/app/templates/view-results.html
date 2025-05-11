@@ -15,19 +15,16 @@
                             <th class="border px-4 py-2">Votes</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td class="border px-4 py-2">Candidate 1</td>
-                            <td class="border px-4 py-2">100</td>
+ <tbody>
+ {% for result in results %}
+ <tr>
+ <td class="border px-4 py-2 flex items-center">
+ <img src="{{ url_for('static', filename='profile_pics/' + result.image_file) }}" alt="{{ result.name }} Profile Picture" class="w-10 h-10 rounded-full mr-3">
+ {{ result.name }}
+ </td>
+ <td class="border px-4 py-2">{{ result.votes }}</td>
                         </tr>
-                        <tr>
-                            <td class="border px-4 py-2">Candidate 2</td>
-                            <td class="border px-4 py-2">150</td>
-                        </tr>
-                        <tr>
-                            <td class="border px-4 py-2">Candidate 3</td>
-                            <td class="border px-4 py-2">200</td>
-                        </tr>
+ {% endfor %}
                     </tbody>
                 </table>
             </div>
