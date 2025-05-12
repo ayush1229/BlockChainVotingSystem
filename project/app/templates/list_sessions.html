@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2>Active Voting Sessions</h2>
+        {% if sessions %}
+            <ul class="list-group">
+                {% for session in sessions %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ session.title }}
+                        <a href="{{ url_for('user.voter_auth', session_id=session.id) }}" class="btn btn-primary btn-sm">Vote</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No active voting sessions found.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

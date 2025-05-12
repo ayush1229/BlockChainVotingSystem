@@ -22,8 +22,33 @@
                 </div>
             </fieldset>
             <div class="form-group">
+            <input type="hidden" id="wallet_address" name="wallet_address" value="">
                 {{ form.submit(class="btn btn-outline-info") }}
             </div>
         </form>
     </div>
+
+    <script>
+        const connectWalletBtn = document.getElementById('connectWalletBtn');
+        const walletAddressDisplay = document.getElementById('walletAddressDisplay');
+        const walletAddressInput = document.getElementById('wallet_address');
+
+        if (typeof window.ethereum !== 'undefined') {
+            connectWalletBtn.style.display = 'block'; // Show button if Metamask is detected
+            connectWalletBtn.addEventListener('click', async () => {
+                try {
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const account = accounts[0];
+                    walletAddressDisplay.textContent = `Connected: ${account}`;
+                    walletAddressInput.value = account; // Set the hidden input value
+                } catch (error) {
+                    console.error("Error connecting wallet:", error);
+                    walletAddressDisplay.textContent = 'Error connecting to wallet.';
+                }
+            });
+        } else {
+            walletAddressDisplay.textContent = 'Please install Metamask or another web3 wallet.';
+            connectWalletBtn.style.display = 'none'; // Hide button if no web3 provider
+        }
+    </script>
 {% endblock content %}

@@ -15,6 +15,12 @@ main = Blueprint('main', __name__)
 def index():
     return render_template('index.html', title='Home')
 
+@main.route('/sessions')
+def list_sessions():
+    # Fetch all active voting sessions
+    active_sessions = VotingSession.query.filter_by(is_active=True).all()
+    return render_template('list_sessions.html', title='Active Voting Sessions', sessions=active_sessions)
+
 @main.route('/about')
 def about():
     return render_template('about.html', title='About')

@@ -9,9 +9,6 @@
                         <select id="candidate" name="candidate" 
                                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                             <option value="">Choose a candidate</option>
-                            <option value="candidate1">Candidate 1</option>
-                            <option value="candidate2">Candidate 2</option>
-                            <option value="candidate3">Candidate 3</option>
                             {% for candidate in session.candidates %}
                             <option value="{{ candidate.id }}">{{ candidate.name }}</option>
                             {% endfor %}

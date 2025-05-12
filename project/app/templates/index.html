@@ -8,9 +8,8 @@
             <img src="{{ url_for('static', filename='manevmu.png') }}" alt="Voting Image" style="width: 100%; height: auto;opacity: 0.8;">
         </div>
         <div class="button-container" style="margin-left: auto;">
-            <button onclick="window.location.href='{{ url_for('main.voter', session_id=some_session_id) }}'" class="bg-blue-500 text-white text-lg py-1 px-2 rounded-lg transition-transform transform hover:scale-60 hover:bg-blue-600 flex items-center" id="voterButton">
+            <a href="{{ url_for('main.list_sessions') }}" class="bg-blue-500 text-white text-lg py-1 px-2 rounded-lg transition-transform transform hover:scale-60 hover:bg-blue-600 flex items-center" id="voterButton">
                 <img class="bgi" src="{{ url_for('static', filename='voter.png') }}" alt="Voting Image" style="width: 10%; height: auto; opacity: 0.6; margin-right: 5px;"> I am a Voter
-            </button>
             <br>
             <br>
             <br>
