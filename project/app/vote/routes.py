@@ -67,11 +67,10 @@ def vote_in_session(session_id):
                 if candidate.id == selected_candidate_id:
                     selected_candidate_index = index
                     break
+            # Ensure web3_utils.vote handles NFT check internally
             # This is a placeholder and highly insecure for production
             user_private_key = "YOUR_PRIVATE_KEY" # Replace with secure key management
             try:
-                # Call web3_utils to interact with the smart contract
-                # You will need to ensure web3_utils.vote handles NFT check internally
                 web3_utils.vote(session_id, selected_candidate_index, current_user.wallet_address, user_private_key)
                 flash('Your vote has been cast successfully!', 'success')
                 return redirect(url_for('main.submission')) # Redirect to a success page
