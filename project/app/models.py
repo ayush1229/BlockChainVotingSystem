@@ -11,11 +11,13 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class UserEmail(db.Model):
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
 
 class User(db.Model, UserMixin):
+    __table_args__ = {'extend_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)

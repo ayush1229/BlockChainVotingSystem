@@ -22,7 +22,7 @@
                 <ul class="flex space-x-4">
                     <li><a href="{{ url_for('main.index') }}" class="text-white hover:underline text-lg">Home</a></li>
                     <li><a href="{{ url_for('main.about') }}" class="text-white hover:underline text-lg">About</a></li>
-                    <li><a href="{{ url_for('main.candidates') }}" class="text-white hover:underline text-lg">Candidates</a></li>
+                    <li><a href="{{ url_for('main.candidates', session_id=1) }}" class="text-white hover:underline text-lg">Candidates</a></li>
                     <li><a href="{{ url_for('main.importance') }}" class="text-white hover:underline text-lg">Importance</a></li>
     
                 </ul>

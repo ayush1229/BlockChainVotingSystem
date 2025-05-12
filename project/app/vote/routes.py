@@ -4,6 +4,7 @@ from app import db
 from sqlalchemy.orm import joinedload # Import joinedload
 from app.models import VotingSession, Admin, UserSessionVerification, User, ManualVerificationRequest
 import json
+import web3_utils
 
 vote = Blueprint('vote', __name__)
 
@@ -34,7 +35,7 @@ def vote_in_session(session_id):
                 if not pending_request:
                     return redirect(url_for('vote.request_manual_verification', session_id=session_id)) # Redirect to manual verification request page
                 else:
-                     flash('Your manual verification request is pending review.', 'info')
+                    flash('Your manual verification request is pending review.', 'info')
             elif admin.email_verification_method == 'institute':
                 # Check if any of the user's emails match the institute domain
                 user_emails = json.loads(current_user.emails) if current_user.emails else []
@@ -51,9 +52,9 @@ def vote_in_session(session_id):
                     is_verified = True # Update status after verification
                     flash('Email verified successfully. You can now vote.', 'success')
                 else:
- flash(f'Voting in this session requires an email from the {admin.allowed_email_domain} domain.', 'danger')
- # Redirect back to the voting page with an error, or a dedicated info page
-                return redirect(url_for('vote.vote_in_session', session_id=session_id))
+                    flash(f'Voting in this session requires an email from the {admin.allowed_email_domain} domain.', 'danger')
+                    # Redirect back to the voting page with an error, or a dedicated info page
+                    return redirect(url_for('vote.vote_in_session', session_id=session_id))
 
 
         if is_verified:
@@ -82,7 +83,7 @@ def vote_in_session(session_id):
             flash('You need to complete the verification process to vote in this session.', 'danger')
             # Depending on the verification method, you might redirect to the appropriate page
             if admin.email_verification_method == 'manual' and not pending_request:
-                 return redirect(url_for('vote.request_manual_verification', session_id=session_id))
+                return redirect(url_for('vote.request_manual_verification', session_id=session_id))
             return redirect(url_for('vote.vote_in_session', session_id=session_id)) # Redirect back to vote page to show message
 
     # GET request: Display the voting page and verification status.
@@ -118,7 +119,7 @@ def request_manual_verification(session_id):
         new_request = ManualVerificationRequest(
             user_id=current_user.id,
             voting_session_id=session_id,
- additional_info=additional_info # Changed from request.form.get('additional_info') to additional_info
+            additional_info=additional_info # Changed from request.form.get('additional_info') to additional_info
         )
 
         db.session.add(new_request)

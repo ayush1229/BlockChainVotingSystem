@@ -13,7 +13,7 @@ public_address = Web3.to_checksum_address(os.getenv("PUBLIC_ADDRESS"))  # Use th
 w3 = Web3(Web3.HTTPProvider(provider_url))
 
 # Load ABI
-with open("app/static/contracts/VotingSystem.json") as f:
+with open(os.path.join(os.path.dirname(__file__), "app/static/contracts/contracts/Voting.sol/VotingSystem.json")) as f:
     contract_data = json.load(f)
 
 voting_abi = contract_data["abi"]

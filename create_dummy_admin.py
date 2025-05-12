@@ -1,5 +1,9 @@
-from app import create_app, db, bcrypt
-from app.models import Admin
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'project')))
+
+from project.app import create_app, db, bcrypt
+from project.app.models import Admin
 
 # Create a Flask application instance
 app = create_app()
