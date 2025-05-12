@@ -8,6 +8,43 @@ from app.user.utils import save_picture, send_reset_email
 
 user = Blueprint('user', __name__)
 
+@user.route('/voter_auth', methods=['GET', 'POST'])
+def voter_auth():
+    if current_user.is_authenticated:
+        # If already logged in, redirect to vote page (need session_id)
+        # Placeholder redirect for now
+        flash('You are already logged in.', 'info')
+        return redirect(url_for('main.index')) # Or a page that lists sessions
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        wallet_address = request.form.get('wallet_address') # Assume this comes from the form/JS
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            # User exists, log them in
+            # For a real app, you'd want a proper login flow, potentially with password verification
+            # For this scenario, we'll assume email is enough for re-authentication after initial setup
+            login_user(user)
+            flash(f'Welcome back, {user.username}!', 'success')
+        else:
+            # New user, create account
+            # We'll generate a dummy password as it's not used for login here based on the instruction
+            hashed_password = bcrypt.generate_password_hash('dummy_password').decode('utf-8')
+            new_user = User(username=name, email=email, password=hashed_password, wallet_address=wallet_address)
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            flash('Your voter account has been created and you are logged in!', 'success')
+
+        # TODO: Redirect to the vote_in_session page for a specific session_id.
+        # Need to determine how the application knows which session the user wants to vote in.
+        return redirect(url_for('main.index')) # Placeholder redirect
+
+    return render_template('voter_auth.html', title='Voter Login/Register')
+
 @user.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:

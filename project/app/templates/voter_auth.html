@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Voter Authentication</legend>
+                <div class="form-group">
+                    {{ form.username.label(class="form-control-label") }}
+                    {{ form.username(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    {{ form.email.label(class="form-control-label") }}
+                    {{ form.email(class="form-control form-control-lg") }}
+                </div>
+                <div class="form-group">
+                    <h4>Connect Your Wallet</h4>
+                    <p>Please ensure you have a web3 wallet installed (like Metamask) and connected to the appropriate network.</p>
+                    <!-- Placeholder for wallet connection button/instructions -->
+                    <button type="button" class="btn btn-outline-info" id="connectWalletBtn">Connect Wallet</button>
+                    <p id="walletAddressDisplay"></p>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}
